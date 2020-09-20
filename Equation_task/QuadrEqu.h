@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
-#include </home/nadzya/Desktop/my university/c++/Equation_task/LinearEqu.h>
+#include "LinearEqu.h"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ void QuadrEqu::solveEqu()
 {
     if (coeffs[2] != 0)
     {
-        float discr = pow(coeffs[1], 2) - 4*coeffs[2]*coeffs[0];
+        float discr = coeffs[1]*coeffs[1] - 4*coeffs[2]*coeffs[0];
         if (discr >= 0)
         {
             num_root = 2;
