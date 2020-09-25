@@ -2,32 +2,34 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Rational.h"
+
 using namespace std;
 
 class LinearEqu
 {
 protected: 
-    vector<int> coeffs;
-    vector<float> roots;
+    vector<Rational> coeffs;
+    vector<Rational> roots;
     int num_root;
     virtual void solveEqu();
 
 public:
-    LinearEqu(int a1, int a0);    // The constructor
-    vector<int> getCoeff();
-    virtual vector<float> getRootes(int& numRoots);
+    LinearEqu(Rational a1, Rational a0);    // The constructor
+    vector<Rational> getCoeff();
+    virtual vector<Rational> getRootes(int& numRoots);
     virtual string typeOfEqu();
     virtual string rootToStr(string noroots="No roots", string all_reals="All real numbers");
     virtual string equToStr(char variable);
 };
 
-LinearEqu::LinearEqu(int a1, int a0)
+LinearEqu::LinearEqu(Rational a1, Rational a0)
 {
     coeffs.push_back(a0);
     coeffs.push_back(a1);
 }
 
-vector<int> LinearEqu::getCoeff()
+vector<Rational> LinearEqu::getCoeff()
 {
     return coeffs;
 }
@@ -44,7 +46,7 @@ void LinearEqu::solveEqu()
     else num_root = -1;
 }
 
-vector<float> LinearEqu::getRootes(int& numRoots)
+vector<Rational> LinearEqu::getRootes(int& numRoots)
 {
     solveEqu();
     numRoots = num_root;
@@ -68,7 +70,7 @@ string LinearEqu::rootToStr(string noroots /*="No roots"*/,
             int digitnum;
             if (roots[i] >= 0) digitnum = 5;
             else digitnum = 6;
-            root_str += to_string(roots[i]).substr(0, digitnum) + ", ";
+            root_str += ratioToStr(roots[i]).substr(0, digitnum) + ", ";
         }
         return root_str.substr(0, root_str.size()-2);
     }
@@ -85,7 +87,7 @@ string LinearEqu::equToStr(char variable)
         if (coeffs[i] == 0)
             continue;
             
-        string coef = coeffs[i]!=1 ? to_string(coeffs[i]) : "";
+        string coef = coeffs[i]!=1 ? ratioToStr(coeffs[i]) : "";
         if (i == 1)
         {
             equ += coef + variable + " + ";
@@ -96,7 +98,7 @@ string LinearEqu::equToStr(char variable)
     if (coeffs[0] == 0 && equ != "")
         equ = equ.substr(0, equ.size()-3) + " = 0 ";
     else
-        equ += to_string(coeffs[0]) + " = 0";
+        equ += ratioToStr(coeffs[0]) + " = 0";
 
     return equ;
 }

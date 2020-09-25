@@ -12,11 +12,11 @@ private:
     void solveEqu();
 
 public:
-    QuadrEqu(int a2, int a1, int a0);
+    QuadrEqu(Rational a2, Rational a1, Rational a0);
     string typeOfEqu();
 };
 
-QuadrEqu::QuadrEqu(int a2, int a1, int a0): LinearEqu(a1, a0)
+QuadrEqu::QuadrEqu(Rational a2, Rational a1, Rational a0): LinearEqu(a1, a0)
 {
     coeffs.push_back(a2);
 }
@@ -25,7 +25,7 @@ void QuadrEqu::solveEqu()
 {
     if (coeffs[2] != 0)
     {
-        float discr = coeffs[1]*coeffs[1] - 4*coeffs[2]*coeffs[0];
+        Rational discr = coeffs[1]*coeffs[1] - 4*coeffs[2]*coeffs[0];
         if (discr >= 0)
         {
             num_root = 2;
