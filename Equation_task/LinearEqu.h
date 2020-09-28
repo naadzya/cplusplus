@@ -1,35 +1,36 @@
 #pragma once
-#include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
-#include "Rational.h"
+#include <sstream>
+#include "Complex.h"
 
 using namespace std;
 
 class LinearEqu
 {
 protected: 
-    vector<Rational> coeffs;
-    vector<Rational> roots;
+    vector<Complex> coeffs;
+    vector<Complex> roots;
     int num_root;
     virtual void solveEqu();
 
 public:
-    LinearEqu(Rational a1, Rational a0);    // The constructor
-    vector<Rational> getCoeff();
-    virtual vector<Rational> getRootes(int& numRoots);
+    LinearEqu(Complex a1, Complex a0);    // The constructor
+    vector<Complex> getCoeff();
+    virtual vector<Complex> getRootes(int& numRoots);
     virtual string typeOfEqu();
     virtual string rootToStr(string noroots="No roots", string all_reals="All real numbers");
     virtual string equToStr(char variable);
 };
 
-LinearEqu::LinearEqu(Rational a1, Rational a0)
+LinearEqu::LinearEqu(Complex a1, Complex a0)
 {
     coeffs.push_back(a0);
     coeffs.push_back(a1);
 }
 
-vector<Rational> LinearEqu::getCoeff()
+vector<Complex> LinearEqu::getCoeff()
 {
     return coeffs;
 }
@@ -46,7 +47,7 @@ void LinearEqu::solveEqu()
     else num_root = -1;
 }
 
-vector<Rational> LinearEqu::getRootes(int& numRoots)
+vector<Complex> LinearEqu::getRootes(int& numRoots)
 {
     solveEqu();
     numRoots = num_root;
@@ -62,17 +63,16 @@ string LinearEqu::rootToStr(string noroots /*="No roots"*/,
                             string all_reals /*="All real numbers"*/)
 {
     solveEqu();
-    string root_str = "Roots: ";
+    stringstream root_str;
+    root_str << "Roots: ";
     if (num_root > 0)
     {
         for (int i = 0; i < num_root; i++)
         {
-            int digitnum;
-            if (roots[i] >= 0) digitnum = 5;
-            else digitnum = 6;
-            root_str += ratioToStr(roots[i]).substr(0, digitnum) + ", ";
+            root_str << roots[i] << ", ";
         }
-        return root_str.substr(0, root_str.size()-2);
+        string final_str = root_str.str();
+        return (final_str.substr(0, final_str.size()-2));
     }
     else if(num_root == 0)
         return noroots;
@@ -81,24 +81,31 @@ string LinearEqu::rootToStr(string noroots /*="No roots"*/,
 
 string LinearEqu::equToStr(char variable)
 {
-    string equ = "";
+    stringstream equ;
     for (int i = coeffs.size()-1; i > 0; i--)
     {
         if (coeffs[i] == 0)
             continue;
-            
-        string coef = coeffs[i]!=1 ? ratioToStr(coeffs[i]) : "";
+
+        stringstream coef;
+        Complex one1(1);
+        if (coeffs[i]!=one1)
+            coef << coeffs[i];
+
         if (i == 1)
         {
-            equ += coef + variable + " + ";
+            equ <<"(" << coef.str() <<")*"<< variable << " + ";
             continue;
         }
-        equ += coef + variable + "^" + to_string(i) + " + ";
+        equ << "(" << coef.str() << ")*" << variable << "^" << i << " + ";
     }
-    if (coeffs[0] == 0 && equ != "")
-        equ = equ.substr(0, equ.size()-3) + " = 0 ";
+    if (coeffs[0] == 0 && equ.rdbuf()->in_avail() == 0)
+    {
+        equ.seekp(equ.str().length()-3);
+        equ << " = 0 ";
+    }
     else
-        equ += ratioToStr(coeffs[0]) + " = 0";
+        equ << coeffs[0] << " = 0";
 
-    return equ;
+    return equ.str();
 }

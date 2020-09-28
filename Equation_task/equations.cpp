@@ -4,6 +4,7 @@
 //#include "Rational.h"
 //#include "LinearEqu.h"
 #include "QuadrEqu.h"
+#include "Complex.h"
 
 using namespace std;
 
@@ -15,20 +16,11 @@ void equWorks(LinearEqu &equ)
 
 int main()
 {
-    Rational a = initRatio(1, 2), b = initRatio(-5, 25), c = initRatio(6, 14);
+    Complex a(1, 2), b(-5, 25), c(6, 14);
     LinearEqu eq1(a, b);
     equWorks(eq1);
-    cout << ratioToStr(a + c) << endl;
 
     QuadrEqu eq2(a, b, c);
-    try 
-    { 
-        equWorks(eq2);
-    } 
-    catch(const runtime_error& error)
-    {
-        cerr << error.what() << endl;
-        return -1;
-    }
+    equWorks(eq2);
     return 0;
 }
