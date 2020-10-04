@@ -1,3 +1,8 @@
+/* For test on Linux:
+user@host:~$ g++ -o fractals fractals.cpp -lgraph
+user@host:~$ ./fractals
+*/
+
 #include <graphics.h>
 #include <iostream>
 #include <math.h>
