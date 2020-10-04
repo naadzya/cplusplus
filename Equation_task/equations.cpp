@@ -3,24 +3,26 @@
 #include <math.h>
 //#include "Rational.h"
 //#include "LinearEqu.h"
-#include "QuadrEqu.h"
+#include "CubicEqu.h"
 #include "Complex.h"
 
-using namespace std;
 
 void equWorks(LinearEqu &equ)
 {
-    cout << "This is a " << equ.typeOfEqu() <<": " << equ.equToStr('x') << endl 
-         << equ.rootToStr() << endl;
+    std::cout << "This is a " << equ.typeOfEqu() <<": " << equ.equToStr('x') << std::endl 
+         << equ.rootToStr() << std::endl;
 }
 
 int main()
 {
-    Complex a(1, 2), b(-5, 25), c(6, 14);
-    LinearEqu eq1(a, b);
-    equWorks(eq1);
-
-    QuadrEqu eq2(a, b, c);
-    equWorks(eq2);
+    Complex a(1), b(0), c(0), d(-1);
+    // LinearEqu eq1(a, b);
+    // equWorks(eq1);
+    
+    // QuadrEqu eq2(a, b, c);
+    // equWorks(eq2);
+    
+    CubicEqu eq3(a, b, c, d);
+    equWorks(eq3);
     return 0;
 }

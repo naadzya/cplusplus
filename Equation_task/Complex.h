@@ -77,10 +77,12 @@ class Complex {
   friend Complex atanh(Complex z);
 
   friend std::stringstream& operator<<(std::stringstream& stream, Complex z);
+  friend std::ostream& operator<<(std::ostream& stream, Complex z);
 
   Complex rnd(int precision);
   friend Complex rnd(Complex z, int precision);
 
+  int signum();
 };
 
 
@@ -345,11 +347,24 @@ std::stringstream& operator<<(std::stringstream& stream, Complex z)
 {
   if (z.im() < 0) 
   {
-    stream << std::fixed << std::setprecision(3) << z.re() << z.im() << "j";
+    stream << std::fixed << std::setprecision(2) << z.re() << z.im() << "j";
   }
   else
   {
-    stream << std::fixed << std::setprecision(3) << z.re() << "+" << z.im() <<"j";
+    stream << std::fixed << std::setprecision(2) << z.re() << "+" << z.im() <<"j";
+  }
+  return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, Complex z)
+{
+  if (z.im() < 0) 
+  {
+    stream << std::fixed << std::setprecision(2) << z.re() << z.im() << "j";
+  }
+  else
+  {
+    stream << std::fixed << std::setprecision(2) << z.re() << "+" << z.im() <<"j";
   }
   return stream;
 }
@@ -399,4 +414,11 @@ double rnd(double num, int precision)
   rnum = tnum/pow(10,precision);
 	
   return rnum;
+}
+
+int Complex::signum()
+{
+  if (real < 0 || imag < 0)
+    return -1;
+  return 1;
 }
