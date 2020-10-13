@@ -2,6 +2,7 @@
 #include <vector>
 #include "Segment.h"
 
+
 class KochCurve
 {
 private:
@@ -11,7 +12,7 @@ private:
 
 public:
     KochCurve(int iter, int maxx, int maxy);
-    void draw();
+    void draw(bool withdelay = true);
 };
 
 KochCurve::KochCurve(int iter, int maxx, int maxy)
@@ -23,28 +24,35 @@ KochCurve::KochCurve(int iter, int maxx, int maxy)
 void KochCurve::createcollection()
 {
     Segment divided_segm[4];
-
+    int count_segm = 1, current_segm = 0;
+    std::vector<Segment> temp;
     for (int i = 0; i < max_iter; i++)
     {
-        int current_segm = 0, count_segm = collection.size();
+        current_segm = 0;
+        temp = {};
         while (current_segm < count_segm)
         {
             collection[current_segm].generate(divided_segm);
-            collection[current_segm] = divided_segm[0];
-            collection.insert(collection.begin() + current_segm + 1, 
-                            {divided_segm[1], divided_segm[2], divided_segm[3]});
-            current_segm += 4;
-            count_segm = collection.size();
+            
+            temp.push_back(divided_segm[0]);
+            temp.push_back(divided_segm[1]);
+            temp.push_back(divided_segm[2]);
+            temp.push_back(divided_segm[3]);
+            
+            current_segm += 1;
         }
+        collection = temp;
+        count_segm = collection.size();
     }
 }
 
-void KochCurve::draw()
+void KochCurve::draw(bool withdelay /*= true*/)
 {
     createcollection();
     for (int i = 0; i < collection.size(); i++)
     {
         collection[i].draw();
-        delay(10);
+        if (withdelay)
+            delay(10);
     }
 }

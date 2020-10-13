@@ -11,8 +11,8 @@ protected:
     int start[2];
     int end[2];
     
-    void division(float k, int &coordx, int &coordy);
-    void rotate(int originx, int originy, float phi);
+    void division(double k, int &coordx, int &coordy);
+    void rotate(int originx, int originy, double phi);
 
 public:
     Segment();
@@ -39,13 +39,13 @@ Segment::Segment(int a1, int a2, int b1, int b2)
     end[1] = b2;
 }
 
-void Segment::division(float k, int &coordx, int &coordy)
+void Segment::division(double k, int &coordx, int &coordy)
 {
     coordx = int(start[0] + k*(end[0]-start[0]));
     coordy = int(start[1] + k*(end[1]-start[1]));
 }
 
-void Segment::rotate(int originx, int originy, float phi)
+void Segment::rotate(int originx, int originy, double phi)
 {
     int start0 = (start[0]-originx)*cos(phi) - (start[1]-originy)*sin(phi) + originx,
         start1 = (start[0]-originx)*sin(phi) + (start[1]-originy)*cos(phi) + originy,

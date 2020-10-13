@@ -11,13 +11,12 @@ user@host:~$ ./fractals
 
 int main() 
 {
-	int gd = DETECT, gm, errorcode; 
-	char driver[] = ""; 
+	int gd = DETECT, gm;
 
-	initgraph(&gd, &gm, driver);
+	initgraph(&gd, &gm, NULL);
 
-	KochCurve test(5, getmaxx(), getmaxy());
-	test.draw();
+	KochCurve test(10, getmaxx(), getmaxy());
+	test.draw(false);
 
 	getch();
 	closegraph();
