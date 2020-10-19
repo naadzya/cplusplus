@@ -121,7 +121,7 @@ Vector operator*(Matrix m, Vector v)
 
     for (int i = 0; i < m.row; i++)
         for (int j = 0; j < v.size(); j++)
-            mult[i] += m[i][j] + v[j];
+            mult[i] += m[i][j] * v[j];
     
     Vector vect(m.row, mult);
     return vect;
@@ -150,27 +150,39 @@ double Matrix::l2()
     double zarr[col];
     for (int i = 0; i < col; i++)
         zarr[i] = 1/sqrt(col);
+
     Vector z(col, zarr);
-    Vector y = (*this)*z;
-    std::vector<double> lambdas;
-    const double delta = 0.000001, eps = 0.01;
-    for (int i = 0; i < col; i++)
-        if (abs(z[i]) > delta)
-            lambdas.push_back(y[i]/z[i]);
-
-    // double maxl = *std::max_element(lambdas.begin(), lambdas.end()),
-    //        minl = *std::min_element(lambdas.begin(), lambdas.end());
-    // if (abs(maxl - minl) < eps)
-    //     return 
-
-    double maxl = lambdas[0], minl = lambdas[0];
-    int index;
-    for (int i = 1; i < col; i++)
+    const double delta = 0.0001, eps = 0.01;
+    double minl, maxl, norm;
+    int iter = 0;
+    do
     {
-        if (lambdas[i] > maxl)
-            maxl = lambdas[i];
-        if (lambdas[i] < minl) 
-            minl = lambdas[i];
-    }
+        Vector y = (*this)*z;
+        std::vector<double> lambdas;
+        for (int i = 0; i < col; i++)
+            if (abs(z[i]) > delta)
+                lambdas.push_back(y[i]/z[i]);
+
+        minl = lambdas[0], maxl = lambdas[0];
+        int indmax = 0, indmin = 0;
+        for (int i = 0; i < lambdas.size(); i++)
+        {
+            if (maxl < lambdas[i])
+            {
+                maxl = lambdas[i];
+                indmax = i;
+            }
+            if (minl > lambdas[i])
+            {
+                minl = lambdas[i];
+                indmin = i;
+            }
+        }
+
+        norm = lambdas[(indmin+indmax) / 2];
+        z = (1/y.euclidean())*y;
+    } while (abs(maxl - minl) >= eps);
+    
+    return norm;
 
 }

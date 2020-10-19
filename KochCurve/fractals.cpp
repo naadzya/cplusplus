@@ -16,7 +16,7 @@ int main()
 	initgraph(&gd, &gm, NULL);
 
 	KochCurve test(10, getmaxx(), getmaxy());
-	test.draw(false);
+	test.draw(0);
 
 	getch();
 	closegraph();

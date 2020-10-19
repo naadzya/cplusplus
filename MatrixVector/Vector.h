@@ -18,6 +18,7 @@ public:
 
     int size();
     double& operator[](int index);
+    friend Vector operator*(double a, Vector v);
     friend std::ostream& operator<<(std::ostream& stream, const Vector& vect);
 
     double octahedral();    // Taxicab norm 
@@ -47,6 +48,13 @@ int Vector::size()
 double& Vector::operator[](int index)
 {
     return coords[index];
+}
+
+Vector operator*(double a, Vector v)
+{
+    Vector newv = v;
+    transform(newv.coords.begin(), newv.coords.end(), newv.coords.begin(), [a](double &c){ return c*a; });
+    return newv;
 }
 
 std::ostream& operator<<(std::ostream& stream, const Vector& vect)
